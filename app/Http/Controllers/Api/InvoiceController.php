@@ -7,13 +7,13 @@ use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Validator;
 
 class InvoiceController extends Controller
 {
     private $statusList = ['paga', 'aberta', 'atrasada'];
     private $errors = ['error' => []];
+    private $makeHidden = ['id', 'user_id', 'updated_at', 'created_at'];
 
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class InvoiceController extends Controller
         $userLogin = auth::user();
         $user = User::where('id', $userLogin['id'])->first();
 
-        return response()->json($user->invoices()->get());
+        return response()->json(['result' => $user->invoices()->get()]);
     }
 
     /**
@@ -54,10 +54,10 @@ class InvoiceController extends Controller
         $invoice->save();
 
         return response()->json(
-            ['sucess' =>
+            ['success' =>
                 [
                     'message' => 'Invoice successfully registered.',
-                    'result' => $invoice->makeHidden(['id', 'user_id', 'updated_at', 'created_at'])
+                    'result' => [$invoice->makeHidden($this->makeHidden)]
                 ]
             ]);
     }
@@ -75,6 +75,14 @@ class InvoiceController extends Controller
         $userLogin = auth::user();
         $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
 
+        if ($result) {
+            return response()->json([
+                'success' => true,
+                'result' => [$result->makeHidden($this->makeHidden)]
+            ], 200);
+        } else {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        }
     }
 
 
@@ -83,18 +91,46 @@ class InvoiceController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $invoice = new Invoice();
+        $userLogin = auth::user();
+        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+
+        if ($result) {
+
+            $status = $this->validateStatus($request->status, $this->statusList, $this->errors);
+            $expiration = $this->validateExpiration($request->expiration, $this->errors);
+            $url = $this->validateUrl($request->url, $this->errors);
+
+            if (count($this->errors['error'])) {
+                return response()->json($this->errors, 400);
+            }
+
+
+            $result->status = $status;
+            $result->expiration = $expiration;
+            $result->url = $url;
+            $result->save();
+
+            return response()->json([
+                'success' => 'Invoice update success',
+                'result' => [$result->makeHidden($this->makeHidden)]
+            ], 200);
+        } else {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -106,7 +142,7 @@ class InvoiceController extends Controller
             $isDeleted = Invoice::destroy($id);
             if ($isDeleted) {
                 return response()->json([
-                    'sucess' => 'Invoice successfully deleted',
+                    'success' => 'Invoice successfully deleted',
                     'result' => true
                 ], 200);
             }
@@ -120,10 +156,8 @@ class InvoiceController extends Controller
 
     private function validateStatus($status, $statusList, &$errors)
     {
-
         if (!is_null($status)) {
             if (is_numeric($status)) {
-
                 if ($status >= 0 && $status <= count($statusList) - 1) {
                     return $statusList[$status];
                 } else {
@@ -131,7 +165,6 @@ class InvoiceController extends Controller
                     return;
                 }
             } else {
-
                 if (in_array(strtolower($status), $statusList)) {
                     return $status;
                 } else {
