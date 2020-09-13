@@ -101,7 +101,7 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth('api')->user());
+        return response()->json(auth('api')->user()->makeHidden('id','created_at','updated_at'));
     }
 
     /**

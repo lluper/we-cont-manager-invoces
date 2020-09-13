@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\General\CollectionHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\User;
@@ -13,7 +14,7 @@ class InvoiceController extends Controller
 {
     private $statusList = ['paga', 'aberta', 'atrasada'];
     private $errors = ['error' => []];
-    private $makeHidden = ['id', 'user_id', 'updated_at', 'created_at'];
+    private $makeHidden = ['user_id', 'updated_at', 'created_at'];
 
     /**
      * Display a listing of the resource.
@@ -24,8 +25,12 @@ class InvoiceController extends Controller
     {
         $userLogin = auth::user();
         $user = User::where('id', $userLogin['id'])->first();
+        $resultQuery = $user->invoices()->get()->makeHidden($this->makeHidden);
 
-        return response()->json(['result' => $user->invoices()->get()]);
+        $pageSize = 5;
+        $paginated = CollectionHelper::paginate($resultQuery, $pageSize);
+
+        return response()->json(['result' => $paginated]);
     }
 
     /**
@@ -62,7 +67,6 @@ class InvoiceController extends Controller
             ]);
     }
 
-
     /**
      * Display the specified resource.
      *
@@ -73,18 +77,17 @@ class InvoiceController extends Controller
     {
         $invoice = new Invoice();
         $userLogin = auth::user();
-        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+        $resultQuery = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
 
-        if ($result) {
+        if ($resultQuery) {
             return response()->json([
                 'success' => true,
-                'result' => [$result->makeHidden($this->makeHidden)]
+                'result' => [$resultQuery->makeHidden($this->makeHidden)]
             ], 200);
         } else {
             return response()->json(['error' => 'Invoice not found'], 404);
         }
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -95,12 +98,11 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $invoice = new Invoice();
         $userLogin = auth::user();
-        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+        $resultQuery = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
 
-        if ($result) {
+        if ($resultQuery) {
 
             $status = $this->validateStatus($request->status, $this->statusList, $this->errors);
             $expiration = $this->validateExpiration($request->expiration, $this->errors);
@@ -110,15 +112,14 @@ class InvoiceController extends Controller
                 return response()->json($this->errors, 400);
             }
 
-
-            $result->status = $status;
-            $result->expiration = $expiration;
-            $result->url = $url;
-            $result->save();
+            $resultQuery->status = $status;
+            $resultQuery->expiration = $expiration;
+            $resultQuery->url = $url;
+            $resultQuery->save();
 
             return response()->json([
                 'success' => 'Invoice update success',
-                'result' => [$result->makeHidden($this->makeHidden)]
+                'result' => [$resultQuery->makeHidden($this->makeHidden)]
             ], 200);
         } else {
             return response()->json(['error' => 'Invoice not found'], 404);
@@ -137,8 +138,9 @@ class InvoiceController extends Controller
         $userLogin = auth::user();
         $invoice = new Invoice();
 
-        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
-        if ($result) {
+        $resultQuery = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+
+        if ($resultQuery) {
             $isDeleted = Invoice::destroy($id);
             if ($isDeleted) {
                 return response()->json([
@@ -150,7 +152,6 @@ class InvoiceController extends Controller
             return response()->json(['error' => 'Invoice not found'], 404);
 
         }
-
     }
 
 
