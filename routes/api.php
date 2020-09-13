@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
-Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register');
+Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login')->name('auth.login');
+Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register')->name('auth.login');
 
 
 Route::group(['middleware' => ['apiJwt']], function () {
@@ -25,20 +25,20 @@ Route::group(['middleware' => ['apiJwt']], function () {
         'prefix' => 'auth',
         'namespace' => 'App\Http\Controllers\Api'
     ], function () {
-        Route::post('logout', 'AuthController@logout');
-        Route::post('refresh', 'AuthController@refresh');
-        Route::get('user-profile', 'AuthController@userProfile');
+        Route::post('logout', 'AuthController@logout')->name('auth.logout');
+        Route::post('refresh', 'AuthController@refresh')->name('auth.refresh');
+        Route::get('user-profile', 'AuthController@userProfile')->name('auth.userProfile');
     });
 
     Route::group([
         'prefix' => 'invoice',
         'namespace' => 'App\Http\Controllers\api'
     ], function () {
-        Route::get('view', 'InvoiceController@index');
-        Route::get('view/{id}', 'InvoiceController@show');
-        Route::post('create', 'InvoiceController@store');
-        Route::put('edit/{id}', 'InvoiceController@update');
-        Route::delete('delete/{id}', 'InvoiceController@destroy');
+        Route::get('view', 'InvoiceController@index')->name('invoice.view');
+        Route::get('view/{id}', 'InvoiceController@show')->name('invoice.viewId');
+        Route::post('create', 'InvoiceController@store')->name('invoice.create');
+        Route::put('edit/{id}', 'InvoiceController@update')->name('invoice.edit');
+        Route::delete('delete/{id}', 'InvoiceController@destroy')->name('invoice.delete');
     });
 
 
