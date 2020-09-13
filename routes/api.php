@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login')->name('auth.login');
-Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register')->name('auth.login');
+Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register')->name('auth.register');
 
 
 Route::group(['middleware' => ['apiJwt']], function () {
