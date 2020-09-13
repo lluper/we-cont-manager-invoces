@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,12 +19,12 @@ Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
 Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register');
 
 
-Route::group(['middleware'=> ['apiJwt']], function(){
+Route::group(['middleware' => ['apiJwt']], function () {
 
     Route::group([
         'prefix' => 'auth',
         'namespace' => 'App\Http\Controllers\Api'
-    ], function(){
+    ], function () {
         Route::post('logout', 'AuthController@logout');
         Route::post('refresh', 'AuthController@refresh');
         Route::get('user-profile', 'AuthController@userProfile');
@@ -32,18 +33,21 @@ Route::group(['middleware'=> ['apiJwt']], function(){
     Route::group([
         'prefix' => 'invoice',
         'namespace' => 'App\Http\Controllers\api'
-    ], function(){
-        Route::get('view',   'InvoiceController@index' );
-        Route::get('view/{id}',   'InvoiceController@show' );
-        Route::post('create',   'InvoiceController@store' );
-        Route::put('edit/{id}',   'InvoiceController@update' );
-        Route::delete('delete/{id}',   'InvoiceController@destroy' );
+    ], function () {
+        Route::get('view', 'InvoiceController@index');
+        Route::get('view/{id}', 'InvoiceController@show');
+        Route::post('create', 'InvoiceController@store');
+        Route::put('edit/{id}', 'InvoiceController@update');
+        Route::delete('delete/{id}', 'InvoiceController@destroy');
     });
 
 
-
-
-
+    Route::any('{any}', function () {
+        return response()->json([
+            'status' => false,
+            'message' => 'Page Not Found.',
+        ], 404);
+    })->where('any', '.*');
 
 });
 
