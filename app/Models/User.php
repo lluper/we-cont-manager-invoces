@@ -56,4 +56,8 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims() {
         return [];
     }
+
+    public function invoices(){
+        return $this->hasOne(Invoice::class, 'user_id', 'id');
+    }
 }
