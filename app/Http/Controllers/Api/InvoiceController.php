@@ -41,7 +41,7 @@ class InvoiceController extends Controller
         $url = $this->validateUrl($request->url, $this->errors);
 
         if (count($this->errors['error'])) {
-            return response()->json($this->errors, 400  );
+            return response()->json($this->errors, 400);
         }
 
         $invoice = new Invoice();
@@ -71,7 +71,10 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoice = new Invoice();
+        $userLogin = auth::user();
+        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+
     }
 
 
@@ -96,10 +99,22 @@ class InvoiceController extends Controller
     public function destroy($id)
     {
         $userLogin = auth::user();
-        $invoce = new Invoice();
-        echo $userLogin['id'];
-        $result = $invoce->where('id', $id)->where('user_id', $userLogin['id'])->first();
-        dd($result);
+        $invoice = new Invoice();
+
+        $result = $invoice->where('id', $id)->where('user_id', $userLogin['id'])->first();
+        if ($result) {
+            $isDeleted = Invoice::destroy($id);
+            if ($isDeleted) {
+                return response()->json([
+                    'sucess' => 'Invoice successfully deleted',
+                    'result' => true
+                ], 200);
+            }
+        } else {
+            return response()->json(['error' => 'Invoice not found'], 404);
+
+        }
+
     }
 
 
