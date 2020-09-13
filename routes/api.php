@@ -14,14 +14,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('login', 'App\Http\Controllers\Api\AuthController@login');
-Route::post('register', 'App\Http\Controllers\Api\AuthController@register');
-Route::post('logout', 'App\Http\Controllers\Api\AuthController@logout');
-Route::post('refresh', 'App\Http\Controllers\Api\AuthController@refresh');
-Route::get('user-profile', 'App\Http\Controllers\Api\AuthController@userProfile');
+Route::post('auth/login', 'App\Http\Controllers\Api\AuthController@login');
+Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register');
+
 
 Route::group(['middleware'=> ['apiJwt']], function(){
-   Route::get('user', 'App\Http\Controllers\Api\UserController@index');
+
+    Route::group(['prefix' => 'auth'], function(){
+        Route::post('logout', 'App\Http\Controllers\Api\AuthController@logout');
+        Route::post('refresh', 'App\Http\Controllers\Api\AuthController@refresh');
+        Route::get('user-profile', 'App\Http\Controllers\Api\AuthController@userProfile');
+
+    });
+
+
+
+
 });
 
 
