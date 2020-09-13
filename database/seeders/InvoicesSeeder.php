@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
-class InvocesSeeder extends Seeder
+class InvoicesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
