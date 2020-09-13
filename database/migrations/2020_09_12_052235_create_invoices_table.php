@@ -15,11 +15,21 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id')->unsigned()->nullable(false);
             $table->string('status')->nullable(false);
             $table->date('expiration')->nullable(false);
             $table->text('url')->nullable(false);
             $table->timestamps();
+
         });
+
+        Schema::table('invoices', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+        });
+
+
+
+
 
     }
 
