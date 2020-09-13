@@ -20,12 +20,27 @@ Route::post('auth/register', 'App\Http\Controllers\Api\AuthController@register')
 
 Route::group(['middleware'=> ['apiJwt']], function(){
 
-    Route::group(['prefix' => 'auth'], function(){
-        Route::post('logout', 'App\Http\Controllers\Api\AuthController@logout');
-        Route::post('refresh', 'App\Http\Controllers\Api\AuthController@refresh');
-        Route::get('user-profile', 'App\Http\Controllers\Api\AuthController@userProfile');
-
+    Route::group([
+        'prefix' => 'auth',
+        'namespace' => 'App\Http\Controllers\Api'
+    ], function(){
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::get('user-profile', 'AuthController@userProfile');
     });
+
+    Route::group([
+        'prefix' => 'invoice',
+        'namespace' => 'App\Http\Controllers\api'
+    ], function(){
+        Route::get('view',   'InvoiceController@index' );
+        Route::get('view/{id}',   'InvoiceController@show' );
+        Route::post('create',   'InvoiceController@store' );
+        Route::put('edit/{id}',   'InvoiceController@update' );
+        Route::delete('delete/{id}',   'InvoiceController@destroy' );
+    });
+
+
 
 
 
