@@ -18,18 +18,21 @@ class InvocesSeeder extends Seeder
     {
         DB::table('invoices')->insert([
             'status' => 'paga',
+            'user_id' => '1',
             'expiration' => Carbon::parse('2000-01-01'),
             'url' => '/teste',
         ]);
 
         DB::table('invoices')->insert([
             'status' => 'aberta',
+            'user_id' => '1',
             'expiration' => Carbon::parse('2000-01-01'),
             'url' => '/teste',
         ]);
 
         DB::table('invoices')->insert([
             'status' => 'atrasada',
+            'user_id' => '2',
             'expiration' => Carbon::parse('2000-01-01'),
             'url' => '/teste',
         ]);
