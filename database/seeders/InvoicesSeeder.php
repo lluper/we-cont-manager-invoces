@@ -4,9 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-
+use Faker\Provider\DateTime;
 class InvoicesSeeder extends Seeder
 {
     /**
@@ -19,21 +18,126 @@ class InvoicesSeeder extends Seeder
         DB::table('invoices')->insert([
             'status' => 'paga',
             'user_id' => '1',
-            'expiration' => Carbon::parse('2000-01-01'),
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
             'url' => '/teste',
         ]);
 
         DB::table('invoices')->insert([
             'status' => 'aberta',
             'user_id' => '1',
-            'expiration' => Carbon::parse('2000-01-01'),
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
             'url' => '/teste',
         ]);
 
         DB::table('invoices')->insert([
             'status' => 'atrasada',
             'user_id' => '2',
-            'expiration' => Carbon::parse('2000-01-01'),
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'paga',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'aberta',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'atrasada',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'paga',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'aberta',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'atrasada',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'paga',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'aberta',
+            'user_id' => '1',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'atrasada',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'paga',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'aberta',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'atrasada',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'paga',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'aberta',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
+            'url' => '/teste',
+        ]);
+
+        DB::table('invoices')->insert([
+            'status' => 'atrasada',
+            'user_id' => '2',
+            'expiration' => Carbon::parse(DateTime::date($format = 'Y-m-d', $max = 'now')),
             'url' => '/teste',
         ]);
     }
