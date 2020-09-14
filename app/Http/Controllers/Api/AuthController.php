@@ -37,10 +37,15 @@ class AuthController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        if (!$token = auth('api')->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $userExist = User::where('email', $request->email)->first();
+        if ($userExist === null) {
+            return response()->json(['error' => 'User not exist, please register new user'], 401);
+        } else {
+            if (!$token = auth('api')->attempt($validator->validated())) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return $this->createNewToken($token);
         }
-        return $this->createNewToken($token);
     }
 
     /**
@@ -67,7 +72,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user->makeHidden('id','updated_at','created_at')
+            'user' => $user->makeHidden('id', 'updated_at', 'created_at')
         ], 201);
     }
 
@@ -101,7 +106,7 @@ class AuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(auth('api')->user()->makeHidden('id','created_at','updated_at'));
+        return response()->json(auth('api')->user()->makeHidden('id', 'created_at', 'updated_at'));
     }
 
     /**
