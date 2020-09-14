@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,6 @@ use Illuminate\Support\Facades\Redirect;
 |
 */
 
-Route::any('{any}', function () {
-    return Redirect::to('https://github.com/lluper/weCont-manager-invoices');
-})->where('any', '.*');
+Route::get('/', function () {
+    return view('welcome');
+});
