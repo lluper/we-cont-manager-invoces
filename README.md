@@ -99,7 +99,28 @@ Se preferir migrar com alguns dados de exemplo execute:
 php artisan migrate --seed
 ```
 
-listar usuarios
+Caso tenha preferido fazer a migração com seed foi criados alguns usuários predefinidos que são ele : 
+
+Usuário 1:
+ ```text
+name: we cont,
+email: wecont@gmail.com
+password: 1234567
+```
+
+Usuário 2:
+ ```text
+name: rh wecont,
+email: rh.wec2019@gmail.com
+password: 1234567
+```
+
+Usuário 3:
+ ```text
+name: user teste,
+email: teste@gmail.com
+password: 1234567
+```   
 
 
 #### 8 - Executar nosso projeto 
@@ -110,6 +131,7 @@ php artisan serve
 ```
 
 Agora nossa aplicação esta sendo executada.
+
 
 
 ---
