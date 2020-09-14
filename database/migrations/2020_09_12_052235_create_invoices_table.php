@@ -15,7 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned()->nullable(false);
+            $table->integer('user_id')->unsigned()->nullable();
             $table->string('status')->nullable(false);
             $table->date('expiration')->nullable(false);
             $table->text('url')->nullable(false);
